@@ -61,6 +61,11 @@ GameManager.prototype.setup = function () {
   // Update the actuator
   this.actuate();
 };
+//Sets a random win score
+//Let's make it somekind of random.
+if (Math.random() < 0.5) var win_tile = 2048;
+else if (Math.random() > 0.6) var win_tile = 1024;
+else var win_tile = 512;
 
 // Set up the initial tiles to start the game with
 GameManager.prototype.addStartTiles = function () {
@@ -72,7 +77,9 @@ GameManager.prototype.addStartTiles = function () {
 // Adds a tile in a random position
 GameManager.prototype.addRandomTile = function () {
   if (this.grid.cellsAvailable()) {
-    var value = Math.random() < 0.9 ? 2 : 4;
+    if (Math.random() > 0.5) var value = 2;
+    else if (Math.random() < 0.9) var value = 4;
+    else var value = 8;
     var tile = new Tile(this.grid.randomAvailableCell(), value);
 
     this.grid.insertTile(tile);
@@ -170,8 +177,8 @@ GameManager.prototype.move = function (direction) {
           // Update the score
           self.score += merged.value;
 
-          // The mighty 2048 tile
-          if (merged.value === 2048) self.won = true;
+          // The mighty random tile
+          if (merged.value === win_tile) self.won = true;
         } else {
           self.moveTile(tile, positions.farthest);
         }
